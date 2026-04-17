@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-slate-900 bg-[#FFF7ED] dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200;
+  }
+}
+
+@layer utilities {
+  .brand-gradient {
+    @apply bg-primary;
+  }
+  
+  .brand-text {
+    @apply text-primary;
+  }
+
+  .card-simple {
+    @apply bg-brand-white dark:bg-slate-900 border border-brand-border dark:border-slate-800 rounded-xl shadow-sm;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 dark:bg-slate-800 rounded-full;
+  }
+}
+
+/* Remove flashy old gradients */
+.instagram-gradient, .orange-yellow-gradient, .text-orange-yellow-gradient {
+  background: #4f46e5; /* Fallback to indigo if still used in code */
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+}
