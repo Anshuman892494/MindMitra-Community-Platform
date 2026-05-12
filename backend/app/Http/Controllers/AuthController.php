@@ -82,6 +82,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'bio' => 'nullable|string',
             'goals' => 'nullable|string',
+            'mobile' => 'nullable|string|max:20',
             'image' => 'nullable|image|max:5120', // Max 5MB
         ]);
 
@@ -135,12 +136,37 @@ class AuthController extends Controller
             'email' => $request->email,
             'bio' => $request->bio,
             'goals' => $request->goals,
+            'mobile' => $request->mobile,
             'profile_image' => $profileImageUrl,
         ]);
 
         return response()->json([
             'message' => 'Profile updated successfully',
             'user' => $user
+        ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'message' => 'The provided password does not match your current password.'
+            ], 422);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return response()->json([
+            'message' => 'Password changed successfully'
         ]);
     }
 
@@ -197,7 +223,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 '_id' => $user->_id,
                 'name' => $user->name,
-                'email' => $user->email, // Email is public as requested
+                'email' => $user->email,
                 'bio' => $user->bio,
                 'goals' => $user->goals,
                 'profile_image' => $user->profile_image,

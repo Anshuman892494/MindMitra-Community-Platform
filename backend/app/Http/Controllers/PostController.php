@@ -15,6 +15,12 @@ class PostController extends Controller
         return response()->json($posts);
     }
 
+    public function show($id)
+    {
+        $post = Post::with('user')->findOrFail($id);
+        return response()->json($post);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

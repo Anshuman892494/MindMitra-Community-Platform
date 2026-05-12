@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MindMitra - Health Community Platform 🌿
 
 MindMitra is a modern, responsive, and dynamic web application designed to connect individuals focused on fitness, mental health, diet, and yoga. Built with a premium, engaging UI heavily inspired by Twitter/Instagram, it serves as a community-driven social networking platform for wellness enthusiasts.
@@ -75,3 +76,7 @@ MindMitra prioritizes an ultra-modern aesthetic characterized by:
 
 ---
 *Developed with a focus on clean code architecture and premium user experience.*
+=======
+# MindMitra---Health-Community-Platform
+MindMitra is a modern, responsive, and dynamic web application designed to connect individuals focused on fitness, mental health, diet, and yoga.
+>>>>>>> 264425d160a381d4d0570efb91a2e67fdc9046d0

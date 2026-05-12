@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import Feed from './pages/Feed';
 import Profile from './pages/Profile';
 import Notifications from './pages/Notifications';
+import Settings from './pages/Settings';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import BottomNav from './components/BottomNav';
@@ -67,6 +68,13 @@ function App() {
               <PrivateRoute>
                 <ProtectedLayout>
                   <Notifications />
+                </ProtectedLayout>
+              </PrivateRoute>
+            } />
+            <Route path="/settings" element={
+              <PrivateRoute>
+                <ProtectedLayout>
+                  <Settings />
                 </ProtectedLayout>
               </PrivateRoute>
             } />

@@ -1,10 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Heart, MessageCircle, Info } from 'lucide-react';
 import api from '../services/api';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import PostModal from '../components/PostModal';
 
 export default function Notifications() {
   const queryClient = useQueryClient();
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [isFetchingPost, setIsFetchingPost] = useState(false);
 
   const { data: notifications = [], isLoading } = useQuery({
     queryKey: ['notifications'],
@@ -22,17 +25,37 @@ export default function Notifications() {
 
   useEffect(() => {
      // Mark as read when opening the page if there are unread ones
-     if (notifications.some(n => !n.is_read)) {
+     if (notifications.length > 0 && notifications.some(n => !n.is_read)) {
          markReadMutation.mutate();
      }
   }, [notifications]);
 
+  const handleNotificationClick = async (notification) => {
+    if (!notification.post_id) return;
+    
+    setIsFetchingPost(true);
+    try {
+        const res = await api.get(`/posts/${notification.post_id}`);
+        setSelectedPost(res.data);
+    } catch (err) {
+        console.error("Failed to fetch post:", err);
+    } finally {
+        setIsFetchingPost(false);
+    }
+  };
+
   if (isLoading) {
-    return <div className="text-center py-10 text-slate-400 font-bold uppercase tracking-widest text-sm">Loading Notifications...</div>;
+    return (
+        <div className="flex justify-center items-center h-[60vh]">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    );
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-4 md:py-8">
+    <div className="w-full max-w-4xl mx-auto py-4 md:py-8 px-4 lg:px-8">
+      {/* Main Column */}
+      <div className="w-full">
       <h1 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-4 md:mb-8">
           Notifications
       </h1>
@@ -41,7 +64,11 @@ export default function Notifications() {
         {notifications.length > 0 ? (
            <div className="divide-y divide-slate-100 dark:divide-slate-800">
              {notifications.map((n, idx) => (
-                <div key={n.id || n._id || idx} className={`p-4 md:p-6 flex items-start space-x-4 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50 ${!n.is_read ? 'bg-primary/5 dark:bg-primary/10' : ''}`}>
+                <div 
+                    key={n.id || n._id || idx} 
+                    onClick={() => handleNotificationClick(n)}
+                    className={`p-4 md:p-6 flex items-start space-x-4 transition-colors cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 ${!n.is_read ? 'bg-primary/5 dark:bg-primary/10' : ''}`}
+                >
                     
                     <div className="relative shrink-0">
                         <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-primary font-bold text-lg overflow-hidden ring-2 ring-primary/20">
@@ -57,9 +84,9 @@ export default function Notifications() {
                             <span className="font-bold text-slate-900 dark:text-white">{n.actor_name}</span> 
                             {n.type === 'like' ? ' liked your recent post.' : ' commented on your post.'}
                         </p>
-                        <span className="text-xs text-slate-400 font-medium mt-1.5 block">
-                            {new Date(n.created_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
-                        </span>
+                            <span className="text-[10px] text-slate-400 font-medium mt-1.5 block lowercase">
+                                {new Date(n.created_at).getDate()} {new Date(n.created_at).toLocaleString('en-US', { month: 'long' })}, {new Date(n.created_at).getFullYear()} • {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
                     </div>
 
                     {!n.is_read && (
@@ -78,6 +105,25 @@ export default function Notifications() {
            </div>
         )}
       </div>
+      </div>
+
+      {/* Popup / Modal */}
+      {selectedPost && (
+          <PostModal 
+              post={selectedPost}
+              onClose={() => setSelectedPost(null)}
+          />
+      )}
+
+      {/* Loading Overlay for fetching post */}
+      {isFetchingPost && (
+          <div className="fixed inset-0 z-[110] bg-slate-900/20 backdrop-blur-[2px] flex items-center justify-center">
+              <div className="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-xl flex items-center space-x-3">
+                  <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                  <span className="text-xs font-bold text-slate-600 dark:text-slate-300">Opening post...</span>
+              </div>
+          </div>
+      )}
     </div>
   );
 }

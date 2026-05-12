@@ -1,7 +1,7 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
-import { Bell, Home, User as UserIcon, LogOut, Search, Compass, PlusCircle, Brain } from 'lucide-react';
+import { Bell, Home, User as UserIcon, LogOut, Search, Compass, PlusCircle, Brain, Sun, Moon } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../services/api';
 import { toast } from 'react-toastify';
@@ -17,6 +17,20 @@ export default function Navbar() {
   
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(document.documentElement.classList.contains('dark'));
+
+  const toggleTheme = () => {
+    const root = document.documentElement;
+    if (root.classList.contains('dark')) {
+        root.classList.remove('dark');
+        setIsDarkMode(false);
+        localStorage.setItem('theme', 'light');
+    } else {
+        root.classList.add('dark');
+        setIsDarkMode(true);
+        localStorage.setItem('theme', 'dark');
+    }
+  };
 
   // Fetch Notifications
   const { data: notifications = [] } = useQuery({
@@ -132,8 +146,17 @@ export default function Navbar() {
           )}
       </div>
 
-      {/* Mobile Notifications (Hidden on Desktop) */}
-      <div className="md:hidden">
+      {/* Mobile Actions (Hidden on Desktop) */}
+      <div className="md:hidden flex items-center space-x-2">
+          {/* Theme Toggle */}
+          <button 
+            onClick={toggleTheme}
+            className="p-2 rounded-lg transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600"
+          >
+            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
+
+          {/* Notifications */}
           <Link 
             to="/notifications"
             className="p-2 rounded-lg transition-colors relative hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 block"

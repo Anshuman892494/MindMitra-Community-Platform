@@ -13,11 +13,13 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     Route::post('/user', [AuthController::class, 'updateProfile']);
+    Route::post('/user/password', [AuthController::class, 'changePassword']);
     Route::delete('/user/image', [AuthController::class, 'removeProfileImage']);
     Route::get('/users/search', [AuthController::class, 'searchUsers']);
     Route::get('/users/{id}', [AuthController::class, 'showProfile']);
     
     Route::get('/posts', [PostController::class, 'index']);
+    Route::get('/posts/{id}', [PostController::class, 'show']);
     Route::post('/posts', [PostController::class, 'store']);
     Route::put('/posts/{id}', [PostController::class, 'update']);
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);

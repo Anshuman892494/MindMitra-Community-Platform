@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Compass, User as UserIcon, Bell } from 'lucide-react';
+import { Home, Settings, User as UserIcon, Bell } from 'lucide-react';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useQuery } from '@tanstack/react-query';
@@ -22,9 +22,8 @@ export default function BottomNav() {
 
   const navItems = [
     { icon: Home, path: '/', label: 'Home' },
-    { icon: Compass, path: '#', label: 'Explore' },
-    { icon: Bell, path: '/notifications', label: 'Notifications', count: unreadCount },
     { icon: 'profile', path: '/profile', label: 'Profile' },
+    { icon: Settings, path: '/settings', label: 'Settings' },
   ];
 
   return (

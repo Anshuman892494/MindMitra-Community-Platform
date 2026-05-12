@@ -225,7 +225,7 @@ export default function Feed() {
                           {post.category}
                         </span>
                         <span className="text-[10px] text-slate-400 font-medium lowercase">
-                          • {new Date(post.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          • {new Date(post.created_at).getDate()} {new Date(post.created_at).toLocaleString('en-US', { month: 'long' })}, {new Date(post.created_at).getFullYear()} • {new Date(post.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
                     </div>

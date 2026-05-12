@@ -44,7 +44,7 @@ export default function PostModal({ post, onClose }) {
                  <span className="font-bold text-slate-900 dark:text-white text-base leading-none">{post.user?.name}</span>
                  <div className="flex items-center space-x-2 mt-1">
                     <span className="text-[10px] font-bold text-secondary uppercase tracking-widest">{post.category}</span>
-                    <span className="text-[10px] text-slate-400 font-medium lowercase">• {new Date(post.created_at).toLocaleString()}</span>
+                    <span className="text-[10px] text-slate-400 font-medium lowercase">• {new Date(post.created_at).getDate()} {new Date(post.created_at).toLocaleString('en-US', { month: 'long' })}, {new Date(post.created_at).getFullYear()} • {new Date(post.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                  </div>
               </div>
            </div>
@@ -130,7 +130,7 @@ export default function PostModal({ post, onClose }) {
                        <div className="bg-white dark:bg-slate-900 rounded-lg rounded-tl-none p-3 shadow-sm border border-slate-100 dark:border-slate-800 flex-1">
                           <div className="flex justify-between items-baseline">
                              <span className="text-xs font-bold text-slate-900 dark:text-white">{comment.user_name}</span>
-                             <span className="text-[9px] text-slate-400">{new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                             <span className="text-[9px] text-slate-400">{new Date(comment.created_at).getDate()} {new Date(comment.created_at).toLocaleString('en-US', { month: 'long' })}, {new Date(comment.created_at).getFullYear()} • {new Date(comment.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                           </div>
                           <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 leading-snug font-medium">{comment.text}</p>
                        </div>

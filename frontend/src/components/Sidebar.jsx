@@ -53,7 +53,7 @@ export default function Sidebar() {
   ];
 
   const footerLinks = [
-    { label: 'Setting', icon: Settings, path: '#', disabled: true },
+    { label: 'Setting', icon: Settings, path: '/settings', activeHighlight: true },
     { label: 'Log out', icon: LogOut, action: logout },
   ];
 
@@ -61,12 +61,14 @@ export default function Sidebar() {
     <aside className={`hidden md:flex flex-col h-screen bg-slate-50 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 ${isExpanded ? 'w-64' : 'w-20'}`}>
       
       {/* Header */}
-      <div className="flex justify-between items-center px-5 h-20 shrink-0">
-        <Link to="/" className={`flex items-center space-x-3 overflow-hidden ${!isExpanded && 'opacity-0 w-0'}`}>
+      <div className={`flex items-center px-5 h-20 shrink-0 ${!isExpanded ? 'justify-center' : 'justify-between'}`}>
+        <Link to="/" className="flex items-center space-x-3 overflow-hidden">
             <div className="w-8 h-8 shrink-0">
                 <img src={logo} alt="Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="font-black text-lg text-slate-900 dark:text-white tracking-tight">MindMitra</span>
+            <span className={`font-black text-lg text-slate-900 dark:text-white tracking-tight transition-opacity duration-300 ${isExpanded ? 'opacity-100' : 'opacity-0 hidden'}`}>
+                MindMitra
+            </span>
         </Link>
       </div>
 
